@@ -1,0 +1,809 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Afecto Seguro</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: mobile-first kit app; sticky wordmark, scrolling views, fixed bottom tab bar. */
+:root{
+  --bg:#F4F6FB; --surface:#FFFFFF; --surface-2:#EDF0F7; --ink:#131a2e; --ink-soft:#4a5370;
+  --muted:#747d96; --line:#e2e6f0;
+  --navy:#0B1B3F; --blue:#2B45C4; --blue-soft:#DDE3F7; --yellow:#F5CE47; --yellow-soft:#FBEFC4;
+  --green:#2E7D5B; --green-soft:#D8ECE0; --red:#C0453B; --red-soft:#F6DDDA;
+  --teal:#1C7293; --teal-soft:#d6e7ed; --purple:#6D4C9F; --purple-soft:#e7def2;
+  --shadow:0 6px 20px rgba(14,22,48,.10); --shadow-sm:0 2px 8px rgba(14,22,48,.08);
+  --r:18px; --r-sm:12px; --maxw:620px;
+  --dsp:"Poppins","Helvetica Neue",Helvetica,Arial,sans-serif; --body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --map-land:#dfe6f6; --map-hill:#bcd8c2; --map-stroke:#ffffff;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0a0f1e; --surface:#141b2f; --surface-2:#1d2642; --ink:#eef1f8; --ink-soft:#c2c9db;
+  --muted:#8e97b0; --line:#273150;
+  --navy:#0e2250; --blue:#8aa0ff; --blue-soft:#1d2a52; --yellow:#F5CE47; --yellow-soft:#2e2a16;
+  --green:#6ec49a; --green-soft:#14301f; --red:#e98a82; --red-soft:#331a19;
+  --teal:#5fb6cf; --teal-soft:#15323c; --purple:#b39ad6; --purple-soft:#241a39;
+  --shadow:0 6px 22px rgba(0,0,0,.45); --shadow-sm:0 2px 10px rgba(0,0,0,.4);
+  --map-land:#1e2740; --map-hill:#1d3a2a; --map-stroke:#0a0f1e;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0a0f1e; --surface:#141b2f; --surface-2:#1d2642; --ink:#eef1f8; --ink-soft:#c2c9db;
+  --muted:#8e97b0; --line:#273150;
+  --navy:#0e2250; --blue:#8aa0ff; --blue-soft:#1d2a52; --yellow:#F5CE47; --yellow-soft:#2e2a16;
+  --green:#6ec49a; --green-soft:#14301f; --red:#e98a82; --red-soft:#331a19;
+  --teal:#5fb6cf; --teal-soft:#15323c; --purple:#b39ad6; --purple-soft:#241a39;
+  --shadow:0 6px 22px rgba(0,0,0,.45); --shadow-sm:0 2px 10px rgba(0,0,0,.4);
+  --map-land:#1e2740; --map-hill:#1d3a2a; --map-stroke:#0a0f1e;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.5;margin:0;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--dsp);line-height:1.15;margin:0;text-wrap:balance}
+p{margin:0}a{color:var(--blue)}button{font-family:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:6px}
+
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--navy);color:#fff}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--navy);z-index:21}
+.top .wrap{display:flex;align-items:center;gap:10px;padding-block:12px}
+.badge{width:34px;height:34px;border-radius:9px;background:var(--yellow);color:#0B1B3F;font-family:var(--dsp);font-weight:700;font-size:15px;display:grid;place-items:center;flex:none}
+.top b{font-family:var(--dsp);font-size:17px}
+.top .tag{margin-left:auto;font-size:11px;color:#aeb8d6;font-weight:500}
+
+main{padding-bottom:88px;padding-top:6px}
+.view{display:none;animation:fade .25s ease}.view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.view{animation:none}*{scroll-behavior:auto}
+  .pulse,.ring,.floaty,.cloud-in,.cloud-out,.sense-art svg,.intro-inner,.intro-badge,.people.floaty{animation:none!important}}
+
+.eyebrow{font-family:var(--dsp);font-size:11.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue)}
+.vtitle{font-size:25px;font-weight:700;margin:4px 0 2px}
+.vsub{color:var(--ink-soft);font-size:14px;margin-bottom:16px}
+.section-pad{padding-top:18px}
+
+.hero{background:linear-gradient(160deg,#0B1B3F,#16295C);color:#fff;border-radius:0 0 26px 26px;padding-block:22px 26px;position:relative;overflow:hidden}
+.hero .wrap{position:relative;z-index:2}
+.hero .blob{position:absolute;border-radius:50%;z-index:1;filter:blur(2px)}
+.hero .b1{width:150px;height:150px;background:#2B45C4;opacity:.38;top:-40px;right:-30px}
+.hero .b2{width:120px;height:120px;background:#F5CE47;opacity:.16;bottom:-50px;left:-20px}
+.people{width:100%;max-width:360px;height:auto;display:block;margin:14px auto 6px}
+.people.floaty{animation:floaty 5s ease-in-out infinite}
+
+#intro{position:fixed;inset:0;z-index:50;background:radial-gradient(120% 90% at 50% 0%,#16295C 0%,#0B1B3F 70%);display:grid;place-items:center;padding:26px;padding-top:max(26px,env(safe-area-inset-top,0px));transition:opacity .55s ease}
+#intro.hide{opacity:0;pointer-events:none}
+.intro-inner{text-align:center;color:#fff;max-width:420px;width:100%;animation:introRise .8s cubic-bezier(.2,.7,.2,1) both}
+.intro-badge{width:66px;height:66px;border-radius:19px;background:var(--yellow);color:#0B1B3F;font-family:var(--dsp);font-weight:700;font-size:27px;display:grid;place-items:center;margin:0 auto 6px;box-shadow:0 10px 30px rgba(0,0,0,.35);animation:badgePulse 2.6s ease-in-out infinite}
+.intro-logo{width:136px;height:136px;border-radius:32px;overflow:hidden;margin:0 auto 10px;background:#fff;box-shadow:0 14px 36px rgba(0,0,0,.38)}
+.intro-logo video{width:100%;height:100%;object-fit:cover;display:block}
+.intro-people{width:100%;max-width:300px;height:auto;margin:10px auto 14px;display:block}
+.intro-inner h1{font-size:36px;color:#fff;margin-bottom:4px}
+.intro-inner .tag{color:var(--yellow);font-weight:600;font-size:16px;margin-bottom:22px}
+.intro-btn{background:var(--yellow);color:#0B1B3F;border:none;border-radius:15px;padding:15px 38px;font-family:var(--dsp);font-weight:600;font-size:17px;cursor:pointer;box-shadow:0 10px 28px rgba(0,0,0,.32);transition:transform .12s}
+.intro-btn:active{transform:scale(.96)}
+.intro-foot{color:#9fb0d6;font-size:12.5px;margin-top:18px}
+@keyframes introRise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes badgePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+.hero h1{font-size:28px;font-weight:700}
+.hero .k{color:var(--yellow);font-weight:600;font-size:13px;margin-bottom:6px}
+.hero p{color:#cfd6ea;font-size:14.5px;margin-top:10px;max-width:42ch}
+.sos{display:flex;align-items:center;gap:12px;width:100%;margin-top:18px;background:var(--red);color:#fff;border:none;border-radius:14px;padding:14px 16px;font-size:15px;font-weight:600;box-shadow:var(--shadow-sm);cursor:pointer;text-align:left}
+.sos .ic{font-size:20px;flex:none}.sos small{display:block;font-weight:400;opacity:.9;font-size:12px;margin-top:1px}.sos .arrow{margin-left:auto;font-size:18px;opacity:.9}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.navcard{appearance:none;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:15px;text-align:left;cursor:pointer;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:8px;min-height:116px;color:var(--ink);transition:transform .12s}
+.navcard:active{transform:scale(.97)}
+.navcard .ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;flex:none}
+.navcard h3{font-size:15.5px;font-weight:600}.navcard p{font-size:12px;color:var(--muted);line-height:1.35}
+.ic svg{width:21px;height:21px}
+.i-blue{background:var(--blue-soft);color:var(--blue)}.i-green{background:var(--green-soft);color:var(--green)}
+.i-teal{background:var(--teal-soft);color:var(--teal)}.i-purple{background:var(--purple-soft);color:var(--purple)}
+.i-yellow{background:var(--yellow-soft);color:#9a7a10}.i-red{background:var(--red-soft);color:var(--red)}
+
+.quote{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow-sm)}
+.quote p{font-size:14.5px;font-style:italic;color:var(--ink-soft)}.quote span{display:block;margin-top:8px;font-size:12px;color:var(--muted)}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-sm);padding:16px;margin-bottom:12px}
+.card h3{font-size:16px;font-weight:600;margin-bottom:6px}.card p{font-size:13.5px;color:var(--ink-soft)}
+.pill{display:inline-block;font-family:var(--dsp);font-size:10.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;padding:4px 9px;border-radius:999px;margin-bottom:9px}
+
+.tlist button{width:100%;display:flex;align-items:center;gap:13px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:11px;cursor:pointer;box-shadow:var(--shadow-sm);text-align:left;color:var(--ink);transition:transform .12s}
+.tlist button:active{transform:scale(.98)}
+.tlist .ic{width:44px;height:44px;border-radius:12px;flex:none;display:grid;place-items:center}.tlist .ic svg{width:23px;height:23px}
+.tlist b{font-size:15px;font-weight:600;font-family:var(--dsp)}.tlist small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.tlist .dur{margin-left:auto;font-size:11px;font-weight:600;color:var(--muted);flex:none}
+.backbtn{display:inline-flex;align-items:center;gap:6px;background:none;border:none;color:var(--blue);font-size:14px;font-weight:600;cursor:pointer;padding:6px 0;margin-bottom:4px}
+.miniact{margin-top:9px;background:var(--surface-2);border:1px solid var(--line);color:var(--blue);border-radius:9px;padding:8px 12px;font-size:12.5px;font-weight:600;cursor:pointer}
+
+.breathe-stage,.sense-stage{display:flex;flex-direction:column;align-items:center;gap:16px;padding:12px 0 6px}
+.orb-wrap{width:230px;height:230px;display:grid;place-items:center;position:relative}
+.orb{width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#4f67e0,#2B45C4);box-shadow:0 0 40px rgba(43,69,196,.45);display:grid;place-items:center;color:#fff;font-family:var(--dsp);font-weight:600;font-size:16px;transition:transform 4s ease-in-out,background 1s}
+.orb.hold{background:radial-gradient(circle at 35% 30%,#6a84ef,#3a57d6)}
+.orb.out{background:radial-gradient(circle at 35% 30%,#56b98a,#2E7D5B)}
+.orb-ring{position:absolute;width:210px;height:210px;border-radius:50%;border:2px dashed var(--line)}
+.btimer{font-family:var(--dsp);font-size:34px;font-weight:600;font-variant-numeric:tabular-nums}
+.bphase{font-size:14px;color:var(--ink-soft);min-height:20px;text-align:center}
+.bctrl{display:flex;gap:10px;width:100%}
+.btn{flex:1;border:none;border-radius:13px;padding:13px;font-size:14.5px;font-weight:600;cursor:pointer}
+.btn-primary{background:var(--blue);color:#fff}.btn-ghost{background:var(--surface-2);color:var(--ink)}.btn:disabled{opacity:.45}
+
+.sense-art{position:relative;width:180px;height:180px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--sc) 14%,var(--surface));border:2px solid var(--sc)}
+.sense-art svg{width:74px;height:74px;color:var(--sc);animation:floaty 3s ease-in-out infinite}
+.sense-num{position:absolute;top:10px;right:16px;font-family:var(--dsp);font-weight:700;font-size:30px;color:var(--sc);opacity:.35}
+.sense-art::after{content:"";position:absolute;inset:-10px;border-radius:50%;border:2px solid var(--sc);opacity:.4;animation:pulse 2.6s ease-out infinite}
+.sense-title{font-family:var(--dsp);font-size:22px;font-weight:600}
+.sense-verb{color:var(--ink-soft);font-size:14.5px;text-align:center;margin-top:-6px;max-width:34ch}
+.dots{display:flex;gap:7px}.dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}.dots i.on{background:var(--blue);transform:scale(1.25)}
+@keyframes floaty{0%,100%{transform:translateY(-4px)}50%{transform:translateY(4px)}}
+@keyframes pulse{0%{transform:scale(1);opacity:.5}100%{transform:scale(1.18);opacity:0}}
+
+.tec-illus{display:grid;place-items:center;height:176px}
+.tec-illus svg{width:184px;height:auto}
+.tec-illus .ring{transform-origin:center;animation:grow 3s ease-out infinite}
+.tec-illus .ring2{animation-delay:1s}.tec-illus .ring3{animation-delay:2s}
+.tec-illus.floaty svg{animation:floaty 3.4s ease-in-out infinite}
+@keyframes grow{0%{transform:scale(.4);opacity:.6}100%{transform:scale(1.15);opacity:0}}
+.cloud-pair{display:flex;gap:26px;justify-content:center;align-items:flex-end;height:150px}
+.cloudbox{display:flex;flex-direction:column;align-items:center;gap:10px}
+.cloudbox span{font-family:var(--dsp);font-weight:600;color:var(--ink-soft);font-size:13px}
+.cloud{width:96px}.cloud svg{width:100%;height:auto;display:block}
+.cloud-in{animation:cin 5s ease-in-out infinite}.cloud-out{animation:cout 5s ease-in-out infinite}
+@keyframes cin{0%,100%{transform:scale(.78);opacity:.75}50%{transform:scale(1.14);opacity:1}}
+@keyframes cout{0%,100%{transform:scale(1.14);opacity:1}50%{transform:scale(.78);opacity:.75}}
+
+.step{display:flex;gap:13px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:13px;margin-bottom:10px}
+.step .n{width:30px;height:30px;border-radius:9px;background:var(--blue);color:#fff;font-family:var(--dsp);font-weight:600;display:grid;place-items:center;flex:none;font-size:14px}
+.step b{font-size:14px;font-weight:600}.step p{font-size:13px;color:var(--ink-soft);margin-top:2px}
+
+.line{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:11px;box-shadow:var(--shadow-sm)}
+.line .hd{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.line .dot{width:10px;height:10px;border-radius:50%;flex:none}.line b{font-size:15px;font-weight:600;font-family:var(--dsp)}
+.line .for{font-size:12.5px;color:var(--ink-soft);margin-bottom:10px}
+.numrow{display:flex;align-items:center;gap:8px;background:var(--surface-2);border-radius:11px;padding:9px 12px;margin-bottom:6px}
+.numrow .lbl{font-size:11px;color:var(--muted);flex:none;width:62px}
+.numrow .val{font-family:var(--dsp);font-weight:600;font-size:15px;letter-spacing:.3px;font-variant-numeric:tabular-nums;word-break:break-word}
+.copy{margin-left:auto;border:1px solid var(--line);background:var(--surface);color:var(--blue);border-radius:9px;padding:6px 11px;font-size:12px;font-weight:600;cursor:pointer;flex:none}
+.copy.done{color:var(--green);border-color:var(--green)}
+
+.mapbox{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm);margin-bottom:12px}
+.mapbox svg{display:block;width:100%;height:auto}.mappin{cursor:pointer}
+.legend{display:flex;flex-wrap:wrap;gap:9px 16px;padding:14px}
+.legend span{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-soft)}.legend i{width:12px;height:12px;border-radius:50%}
+.note{background:var(--yellow-soft);border:1px solid #e7d79a;border-radius:var(--r-sm);padding:12px 14px;font-size:12.5px;color:#7a6412;margin-bottom:12px}
+:root[data-theme="dark"] .note,:root:not([data-theme="light"]) .note{color:#e4cf86;border-color:#4a431f}
+.place .meta{font-size:12px;color:var(--muted);margin-top:2px}
+.nearby{display:inline-block;font-family:var(--dsp);font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--green);background:var(--green-soft);padding:3px 8px;border-radius:999px;margin-left:8px}
+.gmaps{display:inline-flex;align-items:center;gap:7px;margin-top:10px;background:var(--blue);color:#fff;border-radius:10px;padding:9px 13px;font-size:12.5px;font-weight:600;text-decoration:none}
+.gmaps svg{width:15px;height:15px}
+.gmaps-all{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--navy);color:#fff;border-radius:var(--r);padding:13px;font-size:14px;font-weight:600;text-decoration:none;margin-bottom:12px}
+.gmaps-all svg{width:18px;height:18px;flex:none}
+.addbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:1.5px dashed var(--line);background:var(--surface);color:var(--blue);border-radius:var(--r);padding:14px;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:12px}
+.pform{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm)}
+
+.field{margin-bottom:14px}.field label{display:block;font-size:13.5px;font-weight:600;margin-bottom:7px}
+.field textarea,.field input,.field select{width:100%;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:12px;font-family:inherit;font-size:14px;resize:vertical}
+.scale{display:flex;gap:8px;flex-wrap:wrap}.scale button{flex:1;min-width:84px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:11px;padding:12px 6px;font-family:var(--dsp);font-weight:600;font-size:15px;cursor:pointer}
+.scale button.sel{background:var(--blue);color:#fff;border-color:var(--blue)}
+.thanks{background:var(--green-soft);border:1px solid var(--green);border-radius:var(--r);padding:18px;text-align:center}
+.thanks b{font-family:var(--dsp);font-size:17px;color:var(--green);display:block;margin-bottom:5px}.thanks p{font-size:13.5px;color:var(--ink-soft)}
+.redbar{display:flex;align-items:center;gap:12px;background:var(--red);color:#fff;border-radius:14px;padding:13px 15px;margin-bottom:14px}
+.redbar b{font-family:var(--dsp);font-size:15px}.redbar small{display:block;font-size:11.5px;opacity:.9}
+.redbar .copy{margin-left:auto;background:rgba(255,255,255,.18);border:none;color:#fff}
+
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:0 -4px 16px rgba(14,22,48,.07)}
+.tabs .row{max-width:var(--maxw);margin:0 auto;display:flex;padding-left:max(6px,env(safe-area-inset-left,0px));padding-right:max(6px,env(safe-area-inset-right,0px))}
+.tab{flex:1;border:none;background:none;color:var(--muted);padding:9px 2px 7px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;font-weight:600}
+.tab svg{width:22px;height:22px}.tab.active{color:var(--blue)}
+.foot{color:var(--muted);font-size:11px;text-align:center;padding:18px 0 6px}
+
+/* header buttons */
+.topbtns{margin-left:auto;display:flex;gap:6px}
+.iconbtn{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.12);border:none;color:#fff;display:grid;place-items:center;cursor:pointer}
+.iconbtn svg{width:19px;height:19px}
+
+/* settings sheet */
+#settings{position:fixed;inset:0;z-index:60;background:rgba(6,10,24,.55);display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--surface);width:100%;max-width:var(--maxw);border-radius:22px 22px 0 0;padding:20px;padding-bottom:max(20px,env(safe-area-inset-bottom,0px));box-shadow:0 -8px 30px rgba(0,0,0,.3);animation:sheetUp .28s ease}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+.sheet-hd{display:flex;align-items:center;margin-bottom:10px}.sheet-hd b{font-family:var(--dsp);font-size:17px}
+.sheet-hd .iconbtn{margin-left:auto;background:var(--surface-2);color:var(--ink)}
+.set-label{font-size:12.5px;font-weight:600;color:var(--muted);margin:14px 0 7px}
+#themeset button.sel,#sizeset button.sel{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+/* intro name */
+.intro-name{width:100%;max-width:280px;margin:0 auto 14px;display:block;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;border-radius:13px;padding:13px 16px;font-family:inherit;font-size:15px;text-align:center}
+.intro-name::placeholder{color:#aeb8d6}
+
+/* animo card */
+.animo{background:linear-gradient(135deg,var(--purple-soft),var(--blue-soft));border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:flex;align-items:center;gap:14px}
+.animo .em{font-size:26px;flex:none}
+.animo p{font-size:14px;font-weight:600;color:var(--ink);font-family:var(--dsp);line-height:1.35}
+.animo button{margin-left:auto;flex:none;border:none;background:var(--surface);color:var(--blue);border-radius:9px;padding:7px 10px;font-size:12px;font-weight:600;cursor:pointer}
+
+/* mood check */
+.mood{display:flex;gap:8px;justify-content:center;margin:14px 0}
+.mood button{flex:1;max-width:60px;border:1px solid var(--line);background:var(--surface);border-radius:13px;padding:10px 0;font-size:26px;cursor:pointer;line-height:1;transition:transform .1s}
+.mood button.sel{border-color:var(--blue);background:var(--blue-soft);transform:scale(1.08)}
+.moodwrap{text-align:center;padding:10px 0}
+.moodwrap h3{font-size:19px;margin-bottom:4px}
+.result{background:var(--green-soft);border:1px solid var(--green);border-radius:var(--r);padding:16px;text-align:center;margin:6px 0 12px}
+.result b{font-family:var(--dsp);color:var(--green);display:block;font-size:17px;margin-bottom:4px}
+.whybox{background:var(--surface-2);border-radius:var(--r-sm);padding:12px 14px;font-size:12.5px;color:var(--ink-soft);margin-top:12px}
+.whybox b{color:var(--ink)}
+.premsg{background:var(--blue-soft);border:1px solid var(--blue);border-radius:var(--r);padding:14px 16px;font-size:13.5px;color:var(--ink);line-height:1.5;margin:4px 0 12px;text-align:left}
+.premsg b{color:var(--blue)}
+:root[data-theme="dark"] .premsg b,:root:not([data-theme="light"]) .premsg b{color:var(--blue)}
+
+/* favorite star */
+.favstar{flex:none;border:none;background:none;cursor:pointer;color:var(--muted);padding:4px;margin-left:auto}
+.favstar svg{width:22px;height:22px}
+.favstar.on{color:#E8B000}.favstar.on svg{fill:#F5CE47}
+.favbtn{border:1px solid var(--line);background:var(--surface);color:var(--blue);border-radius:999px;padding:6px 13px;font-size:12.5px;font-weight:600;cursor:pointer;margin-bottom:10px}
+.empty{text-align:center;color:var(--muted);padding:30px 10px;font-size:13.5px;line-height:1.7}
+
+body.textbig{zoom:1.12}
+</style>
+
+<header class="top"><div class="wrap"><span class="badge">AS</span><b>Afecto Seguro</b>
+  <div class="topbtns"><button class="iconbtn" aria-label="Acerca del proyecto" onclick="go('acerca')">${icon('info')}</button><button class="iconbtn" aria-label="Ajustes" onclick="toggleSettings()">${icon('gear')}</button></div></div></header>
+
+<div id="settings" hidden>
+  <div class="sheet">
+    <div class="sheet-hd"><b>Ajustes</b><button class="iconbtn" aria-label="Cerrar" onclick="toggleSettings()">✕</button></div>
+    <p class="set-label">Tema</p>
+    <div class="scale" id="themeset"><button type="button" data-th="auto">Automático</button><button type="button" data-th="light">Claro</button><button type="button" data-th="dark">Oscuro</button></div>
+    <p class="set-label">Tamaño del texto</p>
+    <div class="scale" id="sizeset"><button type="button" data-sz="normal">Normal</button><button type="button" data-sz="big">Más grande</button></div>
+    <p class="vsub" style="margin:14px 0 0">🔒 Nada de lo que escribes aquí sale de tu teléfono.</p>
+  </div>
+</div>
+
+<div id="intro">
+  <div class="intro-inner">
+    <div class="intro-logo"><video autoplay muted loop playsinline poster="data:image/jpeg;base64,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"><source src="logo.mp4" type="video/mp4"></video></div>
+    <h1>Afecto Seguro</h1>
+    <p class="tag">Afrontar sin esconder</p>
+    <input id="introname" class="intro-name" placeholder="¿Cómo te llamas? (opcional)" maxlength="24" autocomplete="off">
+    <button class="intro-btn" onclick="startApp()">Comenzar</button>
+    <p class="intro-foot">Un kit para expresar afecto con menos miedo</p>
+  </div>
+</div>
+
+<main>
+  <!-- INICIO -->
+  <section id="inicio" class="view active">
+    <div class="hero"><span class="blob b1"></span><span class="blob b2"></span>
+      <div class="wrap">
+        <p class="k" id="hero-greet">Hola 👋 estás en un lugar seguro</p>
+        <h1>Afrontar sin esconder</h1>
+        <div id="hero-art" class="people floaty"></div>
+        <p>Herramientas para expresar afecto con menos miedo. Diversxs, juntxs, con derecho a querer.</p>
+        <button class="sos" onclick="go('ayuda')"><span class="ic">🆘</span><span>¿Necesitas ayuda ahora?<small>Un plan según dónde estás</small></span><span class="arrow">→</span></button>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="grid">
+        <button class="navcard" onclick="go('tecnicas')"><span class="ic i-blue">${icon('breath')}</span><h3>Técnicas</h3><p>Calma el cuerpo en 1–3 minutos</p></button>
+        <button class="navcard" onclick="go('derechos')"><span class="ic i-green">${icon('shield')}</span><h3>Mis derechos</h3><p>Qué te protege y qué puedes hacer</p></button>
+        <button class="navcard" onclick="go('rutas')"><span class="ic i-red">${icon('phone')}</span><h3>Rutas y líneas</h3><p>A quién acudir, paso a paso</p></button>
+        <button class="navcard" onclick="go('mapa')"><span class="ic i-teal">${icon('pin')}</span><h3>Mapa seguro</h3><p>Espacios donde ser quien eres</p></button>
+        <button class="navcard" onclick="go('opinion')"><span class="ic i-purple">${icon('chat')}</span><h3>Tu opinión</h3><p>Ayúdanos a mejorar el prototipo</p></button>
+        <button class="navcard" onclick="go('mikit')"><span class="ic i-yellow">${icon('star')}</span><h3>Mi kit</h3><p>Tus técnicas y líneas favoritas</p></button>
+      </div>
+      <div id="animo" class="animo"></div>
+      <div class="quote"><p>“La libertad de expresar afecto no debería depender de quién está mirando.”</p><span>El punto de partida de este proyecto · Design Thinking</span></div>
+      <button class="navcard" style="width:100%;min-height:0;flex-direction:row;align-items:center;gap:12px;margin-top:4px" onclick="go('acerca')"><span class="ic i-blue">${icon('info')}</span><span><h3 style="font-size:14.5px">¿Qué es esto?</h3><p>Conoce el proyecto detrás de la app</p></span></button>
+      <p class="foot">🔒 Nada de lo que escribes aquí sale de tu teléfono · Prototipo Fase IV</p>
+    </div>
+  </section>
+
+  <!-- AYUDA -->
+  <section id="ayuda" class="view">
+    <div class="hero" style="padding-block:20px 22px"><span class="blob b1"></span>
+      <div class="wrap"><p class="k">Respira. Estás a salvo.</p><h1 style="font-size:24px">¿Necesitas ayuda ahora?</h1>
+      <p>Cuéntanos dónde estás y con quién. Te damos un plan paso a paso.</p></div>
+    </div>
+    <div class="wrap section-pad"><button class="backbtn" onclick="goBack()">← Volver</button><div id="helpcontent"></div></div>
+  </section>
+
+  <!-- TÉCNICAS -->
+  <section id="tecnicas" class="view">
+    <div class="wrap section-pad">
+      <div id="tec-list">
+        <p class="eyebrow">Regula tu cuerpo</p><h2 class="vtitle">Técnicas de afrontamiento</h2>
+        <p class="vsub">Elige una. Puedes usarlas antes de salir o en una situación incómoda.</p>
+        <div class="tlist">
+          <button onclick="openTec('resp')"><span class="ic i-blue">${icon('breath')}</span><span><b>Respiración guiada</b><small>Inhala, sostén, exhala con el círculo</small></span><span class="dur">1 min</span></button>
+          <button onclick="openTec('ground')"><span class="ic i-green">${icon('eye')}</span><span><b>Anclaje 5-4-3-2-1</b><small>Vuelve al presente con tus sentidos</small></span><span class="dur">2 min</span></button>
+          <button onclick="openTec('body')"><span class="ic i-teal">${icon('foot')}</span><span><b>Pies en la tierra</b><small>Suelta la tensión del miedo anticipado</small></span><span class="dur">1 min</span></button>
+          <button onclick="openTec('talk')"><span class="ic i-purple">${icon('spark')}</span><span><b>Frases que sostienen</b><small>Cambia el diálogo interno</small></span><span class="dur">30 s</span></button>
+        </div>
+      </div>
+      <div id="tec-detail" hidden></div>
+    </div>
+  </section>
+
+  <!-- DERECHOS -->
+  <section id="derechos" class="view">
+    <div class="wrap section-pad"><button class="backbtn" onclick="goBack()">← Volver</button><p class="eyebrow">Lo que te protege</p><h2 class="vtitle">Tus derechos</h2>
+      <p class="vsub">En Colombia, ser quien eres y expresar afecto está protegido. Esto te respalda.</p><div id="rights"></div></div>
+  </section>
+
+  <!-- RUTAS -->
+  <section id="rutas" class="view">
+    <div class="wrap section-pad"><button class="backbtn" onclick="goBack()">← Volver</button><p class="eyebrow">A quién acudir</p><h2 class="vtitle">Rutas y líneas de atención</h2>
+      <p class="vsub">Gratuitas y confidenciales en Bogotá. Toca “Copiar” para guardar el número.</p>
+      <div class="note">En emergencia con riesgo para tu vida, marca <b>123</b>. Verifica horarios y números antes de difundirlos: pueden cambiar.</div>
+      <div id="lines"></div></div>
+  </section>
+
+  <!-- MAPA -->
+  <section id="mapa" class="view">
+    <div class="wrap section-pad"><button class="backbtn" onclick="goBack()">← Volver</button><p class="eyebrow">Dónde ser quien eres</p><h2 class="vtitle">Mapa de espacios seguros</h2>
+      <p class="vsub">Elige tu localidad y abre cada lugar en Google Maps para llegar.</p><div id="mapcontent"></div></div>
+  </section>
+
+  <!-- OPINIÓN -->
+  <section id="opinion" class="view">
+    <div class="wrap section-pad"><button class="backbtn" onclick="goBack()">← Volver</button><p class="eyebrow">Esto es un prototipo</p><h2 class="vtitle">Cuéntanos tu experiencia</h2>
+      <p class="vsub">Tu reacción nos ayuda a mejorar “Afecto Seguro”. Toma 1 minuto.</p>
+      <div id="fbform">
+        <div class="field"><label>1. ¿Qué sentiste al usar el kit?</label><textarea id="f1" rows="2" placeholder="En una palabra o frase…"></textarea></div>
+        <div class="field"><label>2. ¿Qué tan útil te pareció?</label>
+          <div class="scale" id="scale"><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="4">4</button><button type="button" data-v="5">5</button></div>
+          <p class="vsub" id="scalemeaning" style="margin:9px 0 0">1 = Nada útil   ·   5 = Muchísimo</p></div>
+        <div class="field"><label>3. ¿Qué le mejorarías o agregarías?</label><textarea id="f3" rows="2" placeholder="Tu idea…"></textarea></div>
+        <button class="btn btn-primary" style="width:100%" onclick="sendFb()">Enviar mi opinión</button>
+        <a id="formlink" class="gmaps-all" style="margin-top:12px;display:none" target="_blank" rel="noopener">Responder el formulario del grupo ↗</a>
+        <p class="vsub" style="margin:12px 0 0">🔒 Tu respuesta se guarda solo en este teléfono.</p>
+      </div>
+      <div id="fbthanks" hidden></div>
+    </div>
+  </section>
+
+  <!-- ACERCA -->
+  <section id="acerca" class="view">
+    <div class="wrap section-pad"><button class="backbtn" onclick="goBack()">← Volver</button>
+      <p class="eyebrow">El proyecto detrás de la app</p><h2 class="vtitle">¿Qué es “Afecto Seguro”?</h2>
+      <p class="vsub">Un prototipo de intervención psicosocial creado con Design Thinking para el seminario de profundización.</p>
+      <div class="card"><span class="pill" style="background:var(--navy);color:#fff">El problema</span><h3>Vigilancia anticipatoria del afecto</h3><p>Las personas jóvenes con orientación sexual diversa en Bogotá regulan y limitan la expresión de afecto en público por temor al juicio social —más que por agresiones directas—, un temor distribuido de forma desigual según clase, raza y apariencia.</p></div>
+      <div class="card"><span class="pill" style="background:var(--blue-soft);color:var(--blue)">Usuarix</span><h3>Pepitx</h3><p>Joven de 18 a 30 años con orientación sexual diversa en Bogotá, que estudia y/o trabaja, y su red de apoyo.</p></div>
+      <div class="card"><span class="pill" style="background:var(--green-soft);color:var(--green)">Insight</span><h3>El miedo pesa más que la violencia</h3><p>La libertad afectiva está condicionada más por el temor al juicio que por la violencia explícita: muchas personas se vigilan sin haber sido agredidas.</p></div>
+      <div class="card"><span class="pill" style="background:var(--yellow-soft);color:#8a6d0f">¿Cómo podríamos…?</span><h3>Afrontar con menos costo</h3><p>¿Cómo podríamos reducir la vigilancia anticipatoria y dar herramientas de afrontamiento a personas jóvenes LGBTIQ+ para que expresen afecto con menor costo emocional?</p></div>
+      <div class="card" style="background:var(--surface-2);border:none"><h3>El foco de esta app</h3><p>Fortalecer el afrontamiento y la regulación emocional, junto con el acceso a redes y espacios seguros. Esta app es el prototipo de baja fidelidad de esa intervención.</p></div>
+      <p class="foot">Fases: Empatizar · Definir · Idear · Prototipar</p></div>
+  </section>
+
+  <!-- MI KIT -->
+  <section id="mikit" class="view">
+    <div class="wrap section-pad"><button class="backbtn" onclick="goBack()">← Volver</button>
+      <p class="eyebrow">Tu acceso rápido</p><h2 class="vtitle">Mi kit</h2>
+      <p class="vsub">Guarda aquí tus técnicas y líneas favoritas tocando la ⭐ en cada una.</p>
+      <div id="mikit-content"></div></div>
+  </section>
+</main>
+
+<nav class="tabs"><div class="row">
+  <button class="tab active" data-t="inicio" onclick="go('inicio')">${icon('home')}<span>Inicio</span></button>
+  <button class="tab" data-t="tecnicas" onclick="go('tecnicas')">${icon('breath')}<span>Técnicas</span></button>
+  <button class="tab" data-t="derechos" onclick="go('derechos')">${icon('shield')}<span>Derechos</span></button>
+  <button class="tab" data-t="rutas" onclick="go('rutas')">${icon('phone')}<span>Rutas</span></button>
+  <button class="tab" data-t="mapa" onclick="go('mapa')">${icon('pin')}<span>Mapa</span></button>
+</div></nav>
+
+<script>
+const PATHS={
+  home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',
+  breath:'<circle cx="12" cy="12" r="4.2"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2 2M16.4 16.4l2 2M18.4 5.6l-2 2M7.6 16.4l-2 2"/>',
+  shield:'<path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/>',
+  phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2"/>',
+  pin:'<path d="M12 21c4-4.5 7-7.5 7-11a7 7 0 10-14 0c0 3.5 3 6.5 7 11z"/><circle cx="12" cy="10" r="2.4"/>',
+  chat:'<path d="M4 5h16v11H9l-5 4z"/>',
+  heart:'<path d="M12 20s-7-4.4-9.2-8.3C1.2 8.5 3 5 6.2 5 8 5 9.3 6 12 8.7 14.7 6 16 5 17.8 5 21 5 22.8 8.5 21.2 11.7 19 15.6 12 20 12 20z"/>',
+  eye:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="2.6"/>',
+  hand:'<path d="M7 12V6.5a1.5 1.5 0 013 0V11m0-.5V5a1.5 1.5 0 013 0v6m0-.5V6.5a1.5 1.5 0 013 0V13a6 6 0 01-6 6 5 5 0 01-4.3-2.4L7.2 14c-.7-1.2-.2-2.1.9-2.5"/>',
+  ear:'<path d="M8 9a4 4 0 118 0c0 2.6-2.2 3.2-2.2 5.3A2.3 2.3 0 019.5 16"/><path d="M9.5 20a2.4 2.4 0 002.2-1.6"/>',
+  nose:'<path d="M12 4v7.5c0 1.4.9 2.4 2.3 2.6M12 11.5c0 1.4-.9 2.4-2.3 2.6M8.8 16a3.6 3.6 0 006.4 0"/>',
+  taste:'<path d="M4 10a8 8 0 0116 0"/><path d="M5 11s2.6 5 7 5 7-5 7-5"/><path d="M9.6 13c0 1.9 4.8 1.9 4.8 0"/>',
+  foot:'<path d="M9 4c2 0 3 2 3 5s-1 4-1 6 1 3-1 4-4-1-4-4 1-3 1-6 0-5 3-5z"/>',
+  spark:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>',
+  ext:'<path d="M14 4h6v6M20 4l-9 9M19 13v6H5V5h6"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+  gear:'<circle cx="12" cy="12" r="3.2"/><path d="M19.4 13a7.8 7.8 0 000-2l2-1.5-2-3.4-2.3 1a7.8 7.8 0 00-1.7-1l-.3-2.5H9.9l-.3 2.5a7.8 7.8 0 00-1.7 1l-2.3-1-2 3.4L3.6 11a7.8 7.8 0 000 2l-2 1.5 2 3.4 2.3-1a7.8 7.8 0 001.7 1l.3 2.5h4.2l.3-2.5a7.8 7.8 0 001.7-1l2.3 1 2-3.4z"/>',
+  star:'<path d="M12 3l2.6 5.6L21 9.3l-4.5 4.3 1.1 6.4L12 17l-5.6 3 1.1-6.4L3 9.3l6.4-.7z"/>',
+  book:'<path d="M4 5a2 2 0 012-2h12v16H6a2 2 0 00-2 2z"/><path d="M18 17H6a2 2 0 00-2 2"/>'
+};
+function icon(n){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+(PATHS[n]||'')+'</svg>'}
+function bigIcon(n){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'+(PATHS[n]||'')+'</svg>'}
+document.body.innerHTML=document.body.innerHTML.replace(/\$\{icon\('(\w+)'\)\}/g,(m,n)=>icon(n));
+
+const views=['inicio','ayuda','tecnicas','derechos','rutas','mapa','opinion','acerca','mikit'];
+let viewHist=[];
+function go(v,record){
+  if(!views.includes(v))v='inicio';
+  if(record!==false){const cur=document.querySelector('.view.active');if(cur&&cur.id!==v)viewHist.push(cur.id);}
+  document.querySelectorAll('.view').forEach(s=>s.classList.toggle('active',s.id===v));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.t===v));
+  if(v==='tecnicas')closeTec();
+  if(v==='ayuda')renderHelp();
+  if(v==='mikit')renderMikit();
+  try{location.hash=v}catch(e){}
+  window.scrollTo(0,0);stopBreath();
+}
+function goBack(){const v=viewHist.pop()||'inicio';go(v,false);}
+
+/* name + settings + afirmaciones */
+function getName(){try{return localStorage.getItem('as_name')||MEM.as_name||''}catch(e){return MEM.as_name||''}}
+function setName(n){MEM.as_name=n;try{localStorage.setItem('as_name',n)}catch(e){}}
+function applyName(){const n=getName(),g=document.getElementById('hero-greet');
+  if(g)g.textContent=n?('Hola, '+n+' 👋 estás en un lugar seguro'):'Hola 👋 estás en un lugar seguro';}
+function startApp(){const inp=document.getElementById('introname');if(inp)setName(inp.value.trim().slice(0,24));
+  applyName();const el=document.getElementById('intro');if(!el)return;el.classList.add('hide');setTimeout(()=>{el.hidden=true},560);}
+
+function toggleSettings(){const s=document.getElementById('settings');if(!s)return;s.hidden=!s.hidden;if(!s.hidden)syncSettings();}
+function syncSettings(){const th=getPref('as_theme','auto'),sz=getPref('as_size','normal');
+  document.querySelectorAll('#themeset button').forEach(b=>b.classList.toggle('sel',b.dataset.th===th));
+  document.querySelectorAll('#sizeset button').forEach(b=>b.classList.toggle('sel',b.dataset.sz===sz));}
+function getPref(k,d){try{return localStorage.getItem(k)||MEM[k]||d}catch(e){return MEM[k]||d}}
+function setPref(k,v){MEM[k]=v;try{localStorage.setItem(k,v)}catch(e){}}
+function applyTheme(th){const r=document.documentElement;if(th==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',th);}
+function applySize(sz){document.body.classList.toggle('textbig',sz==='big')}
+function initSettings(){
+  applyTheme(getPref('as_theme','auto'));applySize(getPref('as_size','normal'));
+  document.querySelectorAll('#themeset button').forEach(b=>b.onclick=()=>{setPref('as_theme',b.dataset.th);applyTheme(b.dataset.th);syncSettings()});
+  document.querySelectorAll('#sizeset button').forEach(b=>b.onclick=()=>{setPref('as_size',b.dataset.sz);applySize(b.dataset.sz);syncSettings()});
+  const s=document.getElementById('settings');if(s)s.addEventListener('click',e=>{if(e.target===s)toggleSettings()});
+}
+
+const ANIMO=[
+  ['💛','Tu forma de querer es válida, aquí y en la calle.'],
+  ['🌈','No tienes que explicarle a nadie a quién amas.'],
+  ['🫂','Mereces espacios donde puedas ser quien eres.'],
+  ['✨','Cuidarte también es un acto de valentía.'],
+  ['💪','Pedir ayuda no te hace débil, te hace sabix.'],
+  ['🕊️','Tu seguridad importa más que la opinión ajena.'],
+  ['🌱','Paso a paso, el miedo también se afloja.'],
+  ['❤️','No estás solx: hay toda una comunidad contigo.']
+];
+let animoIdx=Math.floor(Math.random()*ANIMO.length);
+function renderAnimo(){const el=document.getElementById('animo');if(!el)return;const a=ANIMO[animoIdx];
+  el.innerHTML='<span class="em">'+a[0]+'</span><p>'+a[1]+'</p><button onclick="nextAnimo()">Otro</button>';}
+function nextAnimo(){animoIdx=(animoIdx+1)%ANIMO.length;renderAnimo();}
+const MEM={};
+function load(key){if(MEM[key]!==undefined)return MEM[key];let v=[];try{v=JSON.parse(localStorage.getItem(key)||'[]')}catch(e){v=[]}MEM[key]=v;return v;}
+function store(key,val){MEM[key]=val;try{localStorage.setItem(key,JSON.stringify(val))}catch(e){}}
+function peopleSVG(){
+  const arcs=[['#E4572E',122],['#F3A712',108],['#F5CE47',94],['#45B37A',80],['#3E5BD6',66],['#8E6CC6',52]];
+  let s='<svg viewBox="0 0 340 162" role="img" aria-label="Personas diversas y felices, juntas"><g fill="none" stroke-width="5" stroke-linecap="round" opacity=".4">';
+  arcs.forEach(a=>{const r=a[1];s+='<path d="M'+(170-r)+' 158 A'+r+' '+r+' 0 0 1 '+(170+r)+' 158" stroke="'+a[0]+'"/>';});
+  s+='</g>';
+  const ppl=[{cx:54,cy:96,skin:'#F4CBA2',shirt:'#3E5BD6',hair:'short',hc:'#3a2d22'},
+    {cx:112,cy:100,skin:'#8D5A2B',shirt:'#F5CE47',hair:'buzz',hc:'#241c16'},
+    {cx:170,cy:90,skin:'#EDBE94',shirt:'#2FA3A3',hair:'long',hc:'#E36BA0'},
+    {cx:228,cy:100,skin:'#C68642',shirt:'#8E6CC6',hair:'curly',hc:'#2FA3A3'},
+    {cx:286,cy:96,skin:'#F7D9BA',shirt:'#45B37A',hair:'bun',hc:'#E8B84B'}];
+  ppl.forEach(p=>{const r=18,shTop=p.cy+11,vlen=152-shTop-2,x=p.cx,y=p.cy;
+    s+='<g>';
+    s+='<path d="M'+(x-23)+' 152 v-'+vlen+' a23 21 0 0 1 46 0 v'+vlen+' z" fill="'+p.shirt+'"/>';
+    s+='<rect x="'+(x-5)+'" y="'+(y+9)+'" width="10" height="11" fill="'+p.skin+'"/>';
+    s+='<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+p.skin+'"/>';
+    s+='<circle cx="'+(x-10)+'" cy="'+(y+6)+'" r="3.5" fill="#F0808A" opacity=".45"/><circle cx="'+(x+10)+'" cy="'+(y+6)+'" r="3.5" fill="#F0808A" opacity=".45"/>';
+    s+='<circle cx="'+(x-6.5)+'" cy="'+(y+1)+'" r="2.6" fill="#2a2433"/><circle cx="'+(x+6.5)+'" cy="'+(y+1)+'" r="2.6" fill="#2a2433"/>';
+    s+='<circle cx="'+(x-5.6)+'" cy="'+(y+0.1)+'" r="0.9" fill="#fff"/><circle cx="'+(x+7.4)+'" cy="'+(y+0.1)+'" r="0.9" fill="#fff"/>';
+    s+='<path d="M'+(x-5)+' '+(y+7.5)+' Q'+x+' '+(y+12.5)+' '+(x+5)+' '+(y+7.5)+'" fill="none" stroke="#6b4228" stroke-width="1.8" stroke-linecap="round"/>';
+    if(p.hair==='short')s+='<path d="M'+(x-18)+' '+(y-3)+' a18 18 0 0 1 36 0 q-18 -13 -36 0 z" fill="'+p.hc+'"/>';
+    else if(p.hair==='buzz')s+='<path d="M'+(x-17)+' '+(y-5)+' a17 17 0 0 1 34 0 z" fill="'+p.hc+'" opacity=".92"/>';
+    else if(p.hair==='long')s+='<path d="M'+(x-19)+' '+(y-2)+' a19 19 0 0 1 38 0 v20 q-5 -4 -6 -15 q-13 6 -26 0 q-1 11 -6 15 z" fill="'+p.hc+'"/>';
+    else if(p.hair==='curly')s+='<g fill="'+p.hc+'"><circle cx="'+(x-13)+'" cy="'+(y-8)+'" r="8"/><circle cx="'+x+'" cy="'+(y-15)+'" r="9"/><circle cx="'+(x+13)+'" cy="'+(y-8)+'" r="8"/></g>';
+    else if(p.hair==='bun')s+='<g fill="'+p.hc+'"><circle cx="'+x+'" cy="'+(y-17)+'" r="6.5"/><path d="M'+(x-18)+' '+(y-3)+' a18 18 0 0 1 36 0 q-18 -12 -36 0 z"/></g>';
+    s+='</g>';});
+  s+='<path d="M150 42c0-4.5 7-5.5 8-1 1-4.5 8-3.5 8 1 0 5-8 9.5-8 9.5s-8-4.5-8-9.5z" fill="#F5CE47"/>';
+  s+='<path d="M198 32c0-3.5 5.5-4.5 6.5-1 1-3.5 6.5-2.5 6.5 1 0 4-6.5 7.5-6.5 7.5s-6.5-3.5-6.5-7.5z" fill="#E36BA0" opacity=".92"/>';
+  return s+'</svg>';
+}
+window.addEventListener('hashchange',()=>{const h=location.hash.replace('#','');if(views.includes(h))go(h)});
+
+/* ---------- técnicas ---------- */
+const TEC={
+  resp:{title:'Respiración guiada',build:breathUI,mood:true,goal:'calmar tu respiración y tu cuerpo',why:'La respiración lenta, con la exhalación más larga, activa el sistema nervioso parasimpático, que le avisa a tu cuerpo que puede calmarse.'},
+  ground:{title:'Anclaje 5-4-3-2-1',build:groundUI,mood:true,goal:'volver al presente cuando el miedo se adelanta',why:'Nombrar lo que percibes con los sentidos trae tu atención al presente y corta el ciclo de pensamientos de miedo anticipado.'},
+  body:{title:'Pies en la tierra',build:bodyUI,mood:true,goal:'soltar la tensión que deja el miedo',why:'Al soltar la tensión muscular, el cuerpo envía señales de seguridad al cerebro y baja la respuesta de alerta.'},
+  talk:{title:'Frases que sostienen',mood:false,goal:'cuidar tu diálogo interno',why:'Cambiar el diálogo interno reduce la autocrítica y refuerza una imagen más amable de ti.',build:()=>phrasesUI([
+    'Tengo derecho a existir y a querer en este espacio.','Lo que otrxs piensen no define quién soy.',
+    'Puedo cuidarme sin esconderme.','No estoy solx: hay redes y personas que me apoyan.'])}};
+let tecReturn=null,tecId=null,tecPre=0;
+function openTec(id,ret){tecReturn=ret||null;tecId=id;tecPre=0;const t=TEC[id];document.getElementById('tec-list').hidden=true;
+  const d=document.getElementById('tec-detail');d.hidden=false;
+  const back=tecReturn?'<button class="backbtn" onclick="tecBack()">← Volver a mi plan</button>':'<button class="backbtn" onclick="closeTec()">← Técnicas</button>';
+  d.innerHTML=back+'<p class="eyebrow">'+t.title+'</p>'+
+    '<button class="favbtn" id="favbtn" onclick="toggleFavTec()">'+(isFav('tec:'+id)?'★ En Mi kit':'☆ Guardar en Mi kit')+'</button>'+
+    '<div id="tec-body"></div>';
+  if(t.mood)moodPre();else t.build();
+  window.scrollTo(0,0);}
+function tecBack(){const r=tecReturn;tecReturn=null;go(r||'tecnicas',false);}
+function helpTecnica(id){go('tecnicas',false);openTec(id,'ayuda');}
+function toggleFavTec(){const key='tec:'+tecId,l=getFav(),i=l.indexOf(key);if(i>=0)l.splice(i,1);else l.push(key);store('as_fav',l);
+  const b=document.getElementById('favbtn');if(b)b.innerHTML=(i<0?'★ En Mi kit':'☆ Guardar en Mi kit');}
+
+const MOODS=[['😣',5],['😟',4],['😐',3],['🙂',2],['😌',1]];
+function emoFor(v){const m=MOODS.find(m=>m[1]===v);return m?m[0]:''}
+function moodPre(){const t=TEC[tecId];
+  document.getElementById('tec-body').innerHTML='<div class="moodwrap"><h3>¿Cómo está tu cuerpo ahora?</h3>'+
+    '<p class="vsub">Toca la cara que más se parece a cómo te sientes.</p>'+
+    '<div class="mood" id="moodpre">'+MOODS.map(m=>'<button onclick="pickPre('+m[1]+',this)">'+m[0]+'</button>').join('')+'</div>'+
+    '<div id="premsg"></div>'+
+    '<button class="btn btn-primary" id="startt" style="width:100%;opacity:.5" disabled>Empezar la técnica</button>'+
+    (t.why?'<div class="whybox"><b>¿Por qué funciona?</b> '+t.why+'</div>':'')+'</div>';}
+function pickPre(v,btn){tecPre=v;document.querySelectorAll('#moodpre button').forEach(x=>x.classList.toggle('sel',x===btn));
+  const name=getName(),goal=TEC[tecId].goal||'sentirte mejor';let msg;
+  if(v>=4)msg='<b>'+(name?name+', g':'G')+'racias por contarme cómo te sientes.</b> Vamos a hacer juntxs una técnica para '+goal+'.';
+  else if(v===3)msg='<b>'+(name?name+', h':'H')+'agamos una técnica para '+goal+'.</b> Te puede ayudar a sentirte un poco mejor.';
+  else msg='<b>Me alegra que estés bien'+(name?', '+name:'')+' 💛</b> Te enseño esta técnica para '+goal+', así la tienes lista para cuando la necesites.';
+  const pm=document.getElementById('premsg');if(pm)pm.innerHTML='<div class="premsg">'+msg+'</div>';
+  const s=document.getElementById('startt');s.disabled=false;s.style.opacity='1';s.textContent=(v>=4?'Empezar ahora':'Empezar la técnica');s.onclick=()=>TEC[tecId].build();}
+function moodPost(){document.getElementById('tec-body').innerHTML='<div class="moodwrap"><h3>¿Y cómo está tu cuerpo ahora?</h3>'+
+  '<div class="mood" id="moodpost">'+MOODS.map(m=>'<button onclick="pickPost('+m[1]+',this)">'+m[0]+'</button>').join('')+'</div><div id="moodresult"></div></div>';}
+function pickPost(v,btn){document.querySelectorAll('#moodpost button').forEach(x=>x.classList.toggle('sel',x===btn));
+  const diff=tecPre-v;let msg,extra='';
+  if(!tecPre)msg='Gracias por registrar cómo te sientes.';
+  else if(diff>0)msg='Tu malestar bajó 👏 Tu cuerpo se está calmando.';
+  else if(diff===0)msg='Sigues igual, y está bien. Date un momento más.';
+  else{msg='Si te sientes peor, no estás solx.';extra='<button class="btn btn-primary" style="width:100%;margin-top:4px" onclick="go(\'rutas\')">Ver líneas de apoyo</button>';}
+  const back=tecReturn?'<button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="tecBack()">← Volver a mi plan</button>':'<button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="closeTec()">Terminar</button>';
+  document.getElementById('moodresult').innerHTML='<div class="result"><b>'+msg+'</b>'+(tecPre?'<p class="vsub" style="margin:0">Antes: '+emoFor(tecPre)+'  →  Ahora: '+emoFor(v)+'</p>':'')+'</div>'+extra+back;}
+
+/* favoritos + mi kit */
+function getFav(){return load('as_fav')}
+function isFav(key){return getFav().indexOf(key)>=0}
+function toggleFav(key,btn){const l=getFav(),i=l.indexOf(key);if(i>=0)l.splice(i,1);else l.push(key);store('as_fav',l);if(btn)btn.classList.toggle('on',i<0);}
+function renderMikit(){const fav=getFav(),el=document.getElementById('mikit-content');if(!el)return;
+  const tecs=fav.filter(k=>k.indexOf('tec:')===0).map(k=>k.slice(4)),lines=fav.filter(k=>k.indexOf('line:')===0).map(k=>k.slice(5));
+  if(!tecs.length&&!lines.length){el.innerHTML='<div class="empty">Aún no has guardado favoritos.<br>Toca la ⭐ en una técnica o línea para verla aquí.</div>';return;}
+  let h='';
+  if(tecs.length)h+='<p class="vsub" style="margin:4px 0 8px">Técnicas</p><div class="tlist">'+tecs.map(id=>{const t=TEC[id];return t?'<button onclick="go(\'tecnicas\',false);setTimeout(()=>openTec(\''+id+'\'),20)"><span class="ic i-blue">'+icon('breath')+'</span><span><b>'+t.title+'</b></span><span class="dur">Abrir →</span></button>':''}).join('')+'</div>';
+  if(lines.length)h+='<p class="vsub" style="margin:12px 0 8px">Líneas de apoyo</p>'+lines.map(n=>{const l=LINES.find(x=>x.n===n);return l?'<div class="line"><div class="hd"><span class="dot" style="background:'+l.c+'"></span><b>'+l.n+'</b></div>'+l.nums.map(num=>'<div class="numrow"><span class="lbl">'+num[0]+'</span><span class="val">'+num[1]+'</span><button class="copy" onclick="copyNum(\''+num[1]+'\',this)">Copiar</button></div>').join('')+'</div>':''}).join('');
+  el.innerHTML=h;}
+const FORM_URL='';
+function applyForm(){const a=document.getElementById('formlink');if(a&&FORM_URL){a.href=FORM_URL;a.style.display='flex';}}
+function closeTec(){stopBreath();const d=document.getElementById('tec-detail');if(d){d.hidden=true;d.innerHTML=''}const l=document.getElementById('tec-list');if(l)l.hidden=false}
+
+function runStepper(cid,steps,onDone){
+  let i=0;const b=document.getElementById(cid);
+  const render=()=>{const s=steps[i];
+    b.innerHTML='<div class="sense-stage">'+s.art+'<b class="sense-title" style="color:'+(s.color||'var(--ink)')+'">'+s.title+'</b>'+
+      '<p class="sense-verb">'+s.sub+'</p><div class="dots">'+steps.map((_,k)=>'<i class="'+(k===i?'on':'')+'"></i>').join('')+'</div>'+
+      '<div class="bctrl"><button class="btn btn-ghost" id="gp"'+(i===0?' disabled':'')+'>Anterior</button>'+
+      '<button class="btn btn-primary" id="gn">'+(i<steps.length-1?'Siguiente →':'Terminar ✓')+'</button></div></div>';
+    document.getElementById('gn').onclick=()=>{i<steps.length-1?(i++,render()):(onDone?onDone():closeTec())};
+    document.getElementById('gp').onclick=()=>{if(i>0){i--;render()}};};
+  render();
+}
+function senseArt(num,ic,c){return '<div class="sense-art" style="--sc:'+c+'"><span class="sense-num">'+num+'</span>'+bigIcon(ic)+'</div>'}
+function cloudSVG(c){return '<svg viewBox="0 0 90 60" aria-hidden="true"><path d="M26 54C14 54 5 45 5 34c0-10 8-18 18-18 2-9 10-14 19-14 11 0 20 8 21 18 8 1 14 7 14 15 0 10-8 17-18 17z" fill="'+c+'" opacity=".16" stroke="'+c+'" stroke-width="2.4" stroke-linejoin="round"/></svg>'}
+function cloudArt(){return '<div class="cloud-pair"><div class="cloudbox"><div class="cloud cloud-in">'+cloudSVG('#2B45C4')+'</div><span>Inhala</span></div>'+
+  '<div class="cloudbox"><div class="cloud cloud-out">'+cloudSVG('#2E7D5B')+'</div><span>Exhala</span></div></div>'}
+
+function groundUI(){
+  const S=[[5,'Mira','eye','#2B45C4','5 cosas que puedes ver a tu alrededor'],
+    [4,'Toca','hand','#2E7D5B','4 cosas que puedes sentir con tus manos'],
+    [3,'Escucha','ear','#1C7293','3 sonidos, cercanos o lejanos'],
+    [2,'Huele','nose','#6D4C9F','2 olores que reconozcas'],
+    [1,'Saborea','taste','#C08A1E','1 sabor en tu boca, o imagina tu favorito']
+  ].map(s=>({art:senseArt(s[0],s[2],s[3]),title:s[1],sub:s[4],color:s[3]}));
+  S.push({art:cloudArt(),title:'Respira lento y profundo',sub:'Toma aire por la nariz… y suéltalo despacio por la boca.',color:'#2B45C4'});
+  document.getElementById('tec-body').innerHTML='<p class="vsub" style="margin-top:6px">Vuelve al presente usando tus sentidos. Hazlo sin prisa.</p><div id="stp"></div>';
+  runStepper('stp',S,moodPost);
+}
+function feetArt(){return '<div class="tec-illus"><svg viewBox="0 0 200 150" fill="none" aria-hidden="true">'+
+  '<g stroke="#2E7D5B" stroke-width="2" opacity=".5"><ellipse class="ring" cx="100" cy="120" rx="54" ry="16"/><ellipse class="ring ring2" cx="100" cy="120" rx="54" ry="16"/><ellipse class="ring ring3" cx="100" cy="120" rx="54" ry="16"/></g>'+
+  '<line x1="24" y1="120" x2="176" y2="120" stroke="var(--line)" stroke-width="3" stroke-linecap="round"/>'+
+  '<g fill="#1C7293"><path d="M74 118c-10 0-16-10-16-24 0-12 5-22 12-22s11 8 11 22c0 12-2 24-7 24z"/><circle cx="66" cy="66" r="3"/><circle cx="72" cy="63" r="3"/><circle cx="78" cy="63" r="3"/><circle cx="83" cy="66" r="2.6"/></g>'+
+  '<g fill="#2E7D5B"><path d="M126 118c10 0 16-10 16-24 0-12-5-22-12-22s-11 8-11 22c0 12 2 24 7 24z"/><circle cx="134" cy="66" r="3"/><circle cx="128" cy="63" r="3"/><circle cx="122" cy="63" r="3"/><circle cx="117" cy="66" r="2.6"/></g></svg></div>'}
+function shouldersArt(){return '<div class="tec-illus floaty"><svg viewBox="0 0 160 150" fill="none" stroke="#2E7D5B" stroke-width="3.2" stroke-linecap="round" aria-hidden="true">'+
+  '<circle cx="80" cy="38" r="17"/><path d="M40 108 Q80 76 120 108"/>'+
+  '<path d="M28 66 v24 M28 90 l-6 -7 M28 90 l6 -7"/><path d="M132 66 v24 M132 90 l-6 -7 M132 90 l6 -7"/></svg></div>'}
+function pressArt(){return '<div class="tec-illus"><svg viewBox="0 0 160 150" fill="none" aria-hidden="true">'+
+  '<g stroke="#6D4C9F" stroke-width="3.2" stroke-linecap="round"><path d="M60 24 v40 M60 64 l-7 -8 M60 64 l7 -8"/><path d="M100 24 v40 M100 64 l-7 -8 M100 64 l7 -8"/></g>'+
+  '<line x1="30" y1="128" x2="130" y2="128" stroke="var(--line)" stroke-width="4" stroke-linecap="round"/>'+
+  '<g fill="#6D4C9F"><path d="M64 124c-8 0-13-8-13-19 0-9 4-16 10-16s9 7 9 16c0 10-1 19-6 19z"/><path d="M96 124c8 0 13-8 13-19 0-9-4-16-10-16s-9 7-9 16c0 10 1 19 6 19z"/></g></svg></div>'}
+function bodyUI(){
+  const S=[{art:feetArt(),title:'Planta los pies',sub:'Siente el piso firme bajo tus dos pies.',color:'#1C7293'},
+    {art:shouldersArt(),title:'Afloja los hombros',sub:'Bájalos despacio y suelta la mandíbula.',color:'#2E7D5B'},
+    {art:pressArt(),title:'Presiona y suelta',sub:'Aprieta los pies contra el suelo 5 segundos y suelta.',color:'#6D4C9F'},
+    {art:cloudArt(),title:'Respira hondo',sub:'Una inhalación lenta. Estás aquí, estás a salvo.',color:'#2B45C4'}];
+  document.getElementById('tec-body').innerHTML='<p class="vsub" style="margin-top:6px">El miedo tensa el cuerpo. Cada paso le dice a tu sistema nervioso que puede bajar la guardia.</p><div id="stp"></div>';
+  runStepper('stp',S,moodPost);
+}
+function phrasesUI(ph){let i=0;const b=document.getElementById('tec-body');
+  const render=()=>{b.innerHTML='<div class="card" style="text-align:center;padding:30px 20px;margin-top:10px"><p style="font-family:var(--dsp);font-size:20px;font-weight:600;line-height:1.3;color:var(--ink)">“'+ph[i]+'”</p></div>'+
+    '<button class="btn btn-primary" style="width:100%" id="nextph">Otra frase →</button><p class="vsub" style="text-align:center;margin-top:12px">Repítela en voz baja. Respira entre cada una.</p>'+
+    '<div class="whybox"><b>¿Por qué funciona?</b> '+TEC.talk.why+'</div>';
+    document.getElementById('nextph').onclick=()=>{i=(i+1)%ph.length;render()}};render();}
+
+/* breathing */
+let bTimer=null,bStepT=null,bRunning=false,bLeft=60;
+function breathUI(){document.getElementById('tec-body').innerHTML='<div class="breathe-stage"><div class="orb-wrap"><div class="orb-ring"></div><div class="orb" id="orb">Listo</div></div><div class="btimer" id="btimer">00:60</div><div class="bphase" id="bphase">Inhala 4 · sostén 4 · exhala 6</div><div class="bctrl"><button class="btn btn-primary" id="bstart">Empezar</button><button class="btn btn-ghost" id="breset">Reiniciar</button></div><button class="btn btn-primary" id="bdone" hidden style="width:100%;margin-top:4px">¿Cómo te sientes ahora? →</button></div>';
+  document.getElementById('bdone').onclick=moodPost;
+  document.getElementById('bstart').onclick=toggleBreath;
+  document.getElementById('breset').onclick=()=>{stopBreath();bLeft=60;setTimer(60);const o=document.getElementById('orb');o.textContent='Listo';o.className='orb';o.style.transform='scale(1)';document.getElementById('bphase').textContent='Inhala 4 · sostén 4 · exhala 6'};
+  bLeft=60;setTimer(60);}
+function setTimer(s){const t=document.getElementById('btimer');if(t)t.textContent='00:'+String(Math.max(s,0)).padStart(2,'0')}
+function toggleBreath(){bRunning?pauseBreath():startBreath()}
+function startBreath(){const orb=document.getElementById('orb'),ph=document.getElementById('bphase'),st=document.getElementById('bstart');if(!orb)return;bRunning=true;st.textContent='Pausar';
+  const cycle=[['Inhala','in',4000,1.6],['Sostén','hold',4000,1.6],['Exhala','out',6000,1]];let ci=0;
+  const step=()=>{const[label,cls,ms,scale]=cycle[ci];orb.className='orb '+(cls==='in'?'':cls);orb.style.transitionDuration=(ms/1000)+'s';orb.style.transform='scale('+scale+')';orb.textContent=label;if(ph)ph.textContent=label+'…';ci=(ci+1)%cycle.length;bStepT=setTimeout(step,ms)};
+  step();bTimer=setInterval(()=>{bLeft--;setTimer(bLeft);if(bLeft<=0)finishBreath()},1000);}
+function pauseBreath(){bRunning=false;clearInterval(bTimer);clearTimeout(bStepT);bTimer=bStepT=null;const st=document.getElementById('bstart');if(st)st.textContent='Seguir';const orb=document.getElementById('orb');if(orb)orb.style.transform='scale(1)'}
+function finishBreath(){stopBreath();const orb=document.getElementById('orb');if(orb){orb.className='orb out';orb.style.transform='scale(1)';orb.textContent='✓'}const ph=document.getElementById('bphase');if(ph)ph.textContent='Bien hecho 💙 Registra cómo te sientes ahora.';const st=document.getElementById('bstart');if(st)st.textContent='Empezar';const bd=document.getElementById('bdone');if(bd)bd.hidden=false;}
+function stopBreath(){bRunning=false;if(bTimer){clearInterval(bTimer);bTimer=null}if(bStepT){clearTimeout(bStepT);bStepT=null}const st=document.getElementById('bstart');if(st&&st.textContent==='Pausar')st.textContent='Empezar'}
+
+/* ---------- derechos ---------- */
+const RIGHTS=[
+  {tag:'Constitución · Art. 13 y 16',c:'blue',h:'Igualdad y libre desarrollo de tu personalidad',p:'Nadie puede discriminarte por tu orientación sexual o identidad de género. Tienes derecho a vivir tu afecto libremente, sin más límite que los derechos de lxs demás.'},
+  {tag:'Corte Constitucional · T-909/2011',c:'green',h:'El afecto en público está protegido',p:'La Corte amparó a una pareja del mismo sexo a la que impidieron mostrarse afecto en un lugar público. Las muestras de cariño entre personas del mismo sexo tienen la misma protección que las de cualquier pareja.'},
+  {tag:'Ley 1482 de 2011',c:'red',h:'La discriminación es un delito',p:'Los actos de discriminación u hostigamiento por orientación sexual pueden denunciarse penalmente. Negarte un servicio o agredirte por quién eres no es legal.'},
+  {tag:'Corte Constitucional · SU-214/2016',c:'purple',h:'Derecho a casarte y formar familia',p:'Las parejas del mismo sexo pueden contraer matrimonio civil en Colombia y tienen los mismos derechos patrimoniales y de familia.'},
+  {tag:'Decreto 1227 de 2015',c:'teal',h:'Derecho a tu identidad de género',p:'Puedes corregir tu nombre y el componente de sexo en tus documentos mediante escritura pública, sin exámenes ni autorizaciones de terceros.'},
+  {tag:'Decreto 762 de 2018',c:'green',h:'Política pública que te garantiza derechos',p:'El Estado está obligado a proteger y garantizar el ejercicio efectivo de los derechos de las personas de los sectores LGBTIQ+.'},
+  {tag:'Mecanismo · Acción de tutela',c:'blue',h:'Una herramienta rápida para defenderte',p:'Si vulneran un derecho fundamental, cualquier persona puede presentar una tutela —sin abogado— y un juez debe responder en máximo 10 días.'}
+];
+function renderRights(){document.getElementById('rights').innerHTML=RIGHTS.map(r=>'<div class="card"><span class="pill" style="background:var(--'+r.c+'-soft);color:var(--'+r.c+')">'+r.tag+'</span><h3>'+r.h+'</h3><p>'+r.p+'</p></div>').join('')+
+  '<div class="card" style="background:var(--surface-2);border:none"><h3>Si alguien vulnera tus derechos</h3><div style="margin-top:8px">'+
+  '<div class="step"><span class="n">1</span><span><b>Ponte a salvo primero</b><p>Tu seguridad va antes que cualquier reclamo.</p></span></div>'+
+  '<div class="step"><span class="n">2</span><span><b>Documenta lo que puedas</b><p>Fecha, lugar, qué pasó, testigos, fotos o audios.</p></span></div>'+
+  '<div class="step"><span class="n">3</span><span><b>Busca apoyo y denuncia</b><p>Usa las líneas y rutas. No tienes que hacerlo solx.</p></span></div></div>'+
+  '<button class="addbtn" style="margin:6px 0 0" onclick="go(\'rutas\')">Ver rutas y líneas →</button></div>'+
+  '<div class="card"><h3>📝 Documenta y guarda</h3><p>Anota lo que pasó. Queda guardado solo en este teléfono, para ti.</p>'+
+  '<div class="field" style="margin-top:10px"><label>¿Qué pasó?</label><textarea id="doc-what" rows="3" placeholder="Qué ocurrió, quién estaba, cómo te sentiste…"></textarea></div>'+
+  '<div class="field"><label>¿Dónde? (opcional)</label><input id="doc-where" placeholder="Lugar o dirección"></div>'+
+  '<button class="btn btn-primary" style="width:100%" onclick="saveDoc()">Guardar</button><div id="doclist"></div></div>';
+  renderDocs();}
+function getDocs(){return load('as_docs')}
+function saveDoc(){const w=(document.getElementById('doc-what').value||'').trim();if(!w){document.getElementById('doc-what').focus();return;}
+  const where=(document.getElementById('doc-where').value||'').trim();const l=getDocs();l.unshift({what:w,where,at:new Date().toISOString()});store('as_docs',l);
+  document.getElementById('doc-what').value='';document.getElementById('doc-where').value='';renderDocs();}
+function delDoc(i){const l=getDocs();l.splice(i,1);store('as_docs',l);renderDocs();}
+function fmtDate(iso){try{const d=new Date(iso);return d.toLocaleDateString('es-CO',{day:'2-digit',month:'short'})+' · '+d.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})}catch(e){return''}}
+function renderDocs(){const l=getDocs(),el=document.getElementById('doclist');if(!el)return;if(!l.length){el.innerHTML='';return;}
+  el.innerHTML='<p class="vsub" style="margin:14px 0 8px">Guardado en este dispositivo</p>'+l.map((d,i)=>'<div class="line" style="margin-bottom:8px"><div class="hd"><span class="dot" style="background:var(--red)"></span><b style="font-size:13px">'+fmtDate(d.at)+'</b><button class="copy" style="margin-left:auto;color:var(--red)" onclick="delDoc('+i+')">Quitar</button></div><p class="for" style="margin:0">'+esc(d.what)+(d.where?' · 📍 '+esc(d.where):'')+'</p></div>').join('');}
+
+/* ---------- líneas ---------- */
+const LINES=[
+  {n:'Línea Diversa',c:'#6D4C9F',for:'Orientación y apoyo del Distrito para personas LGBTI, familias y redes, incluida atención ante discriminación (Unidad Contra la Discriminación).',nums:[['WhatsApp','305 312 0417'],['Correo','ucd@sdis.gov.co']],hint:'Lun–vie, horario laboral'},
+  {n:'Línea 106',c:'#2B45C4',for:'“El poder de ser escuchado”. Escucha y apoyo en salud mental, 24 horas.',nums:[['Llamada','106'],['WhatsApp','300 754 8933']],hint:'Todos los días · 24/7'},
+  {n:'Línea Salvavidas',c:'#C0453B',for:'Fundación Sergio Urrego. Contención para jóvenes en riesgo por discriminación o suicidio.',nums:[['Llamada','311 766 8666']],hint:'Lun–vie 7am–7pm · sáb 7am–12m'},
+  {n:'Línea Púrpura',c:'#9b2d8f',for:'“Mujeres que escuchan mujeres”. Apoyo a mujeres mayores de 18 ante violencias.',nums:[['Llamada','01 8000 112 137'],['WhatsApp','300 755 1846']],hint:'24/7'},
+  {n:'Línea Calma',c:'#1C7293',for:'Escucha emocional para hombres mayores de 18 años.',nums:[['Llamada','01 8000 423 614']],hint:'Lun–vie 8:30am–10:30pm'},
+  {n:'Emergencias 123',c:'#C0453B',for:'Seguridad y emergencias en salud, incluida crisis de salud mental.',nums:[['Llamada','123']],hint:'24/7'},
+  {n:'Una llamada de vida',c:'#2E7D5B',for:'Orientación para acceder a la justicia por las Comisarías de Familia.',nums:[['Llamada','601 380 8400']],hint:'Todos los días 7am–7pm'}
+];
+function renderLines(){document.getElementById('lines').innerHTML=LINES.map(l=>'<div class="line"><div class="hd"><span class="dot" style="background:'+l.c+'"></span><b>'+l.n+'</b><button class="favstar'+(isFav('line:'+l.n)?' on':'')+'" aria-label="Guardar en Mi kit" onclick="toggleFav(\'line:'+l.n+'\',this)">'+icon('star')+'</button></div><p class="for">'+l.for+'</p>'+
+  l.nums.map(num=>'<div class="numrow"><span class="lbl">'+num[0]+'</span><span class="val">'+num[1]+'</span><button class="copy" onclick="copyNum(\''+num[1]+'\',this)">Copiar</button></div>').join('')+
+  '<p class="for" style="margin:8px 0 0;color:var(--muted)">🕐 '+l.hint+'</p></div>').join('');}
+function copyNum(v,btn){const done=()=>{const o=btn.textContent;btn.textContent='¡Listo!';btn.classList.add('done');setTimeout(()=>{btn.textContent=o;btn.classList.remove('done')},1500)};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(v).then(done).catch(()=>fallbackCopy(v,done))}else fallbackCopy(v,done);}
+function fallbackCopy(v,done){try{const t=document.createElement('textarea');t.value=v;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();done()}catch(e){done()}}
+
+/* ---------- mapa ---------- */
+const LOCS=['Usaquén','Chapinero','Santa Fe','San Cristóbal','Usme','Tunjuelito','Bosa','Kennedy','Fontibón','Engativá','Suba','Barrios Unidos','Teusaquillo','Los Mártires','Antonio Nariño','Puente Aranda','La Candelaria','Rafael Uribe Uribe','Ciudad Bolívar','Sumapaz'];
+const PLACES=[
+  {n:'Casa LGBTI Laura Weinstein',loc:'Suba',cat:'Casa LGBTI del Distrito',c:'#2E7D5B',xy:[100,58],addr:'Suba · Calle 146C No. 92-78',hours:'Lun–vie 8am–6pm',q:'Casa LGBTI Laura Weinstein, Calle 146C 92-78, Bogotá',d:'Centro comunitario con orientación psicosocial, actividades y espacio seguro para la diversidad.'},
+  {n:'Chapinero (zona diversa)',loc:'Chapinero',cat:'Zona histórica de la diversidad',c:'#6D4C9F',xy:[186,112],addr:'Localidad de Chapinero',hours:'Vida diurna y nocturna',q:'Chapinero, Bogotá',d:'Barrio histórico de la vida LGBTIQ+ en Bogotá, con amplia oferta cultural, de ocio y encuentro.'},
+  {n:'Casa LGBTI Sebastián Romero',loc:'Teusaquillo',cat:'Casa LGBTI del Distrito',c:'#2E7D5B',xy:[150,168],addr:'Teusaquillo · Calle 44 No. 14-60',hours:'Lun–vie 9am–8pm',q:'Casa LGBTI Sebastián Romero, Calle 44 14-60, Bogotá',d:'La casa más grande del Distrito: atención, formación, cultura y acompañamiento.'},
+  {n:'Casa LGBTI Diana Navarro',loc:'Los Mártires',cat:'Casa LGBTI del Distrito',c:'#2E7D5B',xy:[166,193],addr:'Los Mártires · Carrera 14B No. 21-10',hours:'Lun–vie 8am–6pm',q:'Casa LGBTI Diana Navarro Sandino, Carrera 14B 21-10, Bogotá',d:'Orientación psicosocial y jurídica, con enfoque en derechos y espacios seguros.'},
+  {n:'Casa LGBTI Edwar Hernández',loc:'Kennedy',cat:'Casa LGBTI del Distrito',c:'#2E7D5B',xy:[86,246],addr:'Kennedy · Calle 36 Sur No. 78K-58',hours:'Lun–vie 8am–6pm',q:'Casa LGBTI Edwar Hernández, Calle 36 Sur 78K-58, Bogotá',d:'Punto de encuentro y atención para la comunidad diversa del occidente de la ciudad.'},
+  {n:'Casa LGBTI Amapola',loc:'Rafael Uribe Uribe',cat:'Casa LGBTI del Distrito',c:'#2E7D5B',xy:[182,288],addr:'Rafael Uribe Uribe · Carrera 21 No. 25-06',hours:'Lun–vie 8am–7pm',q:'Casa LGBTI Amapola, Carrera 21 25-06, Bogotá',d:'Acompañamiento, actividades y apoyo para la diversidad en el sur de Bogotá.'}
+];
+let curLoc='';
+const CITY='M150 24 C120 28 104 50 108 82 C80 92 66 128 78 165 C62 198 66 250 96 286 C116 316 150 338 172 334 C196 329 206 300 202 272 C226 258 232 214 216 182 C230 150 226 112 202 100 C206 66 190 30 150 24 Z';
+function gmapsURL(q){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q)}
+function mapSVG(){
+  const pins=PLACES.map(p=>{const near=p.loc===curLoc;return '<g class="mappin" onclick="selLoc(\''+p.loc+'\')">'+
+    (near?'<circle cx="'+p.xy[0]+'" cy="'+p.xy[1]+'" r="12" fill="none" stroke="#F5CE47" stroke-width="2.5"><animate attributeName="r" values="10;14;10" dur="1.6s" repeatCount="indefinite"/></circle>':'')+
+    '<circle cx="'+p.xy[0]+'" cy="'+p.xy[1]+'" r="7.5" fill="'+p.c+'" stroke="#fff" stroke-width="2"/></g>'}).join('');
+  return '<svg viewBox="0 0 300 360" role="img" aria-label="Orientación de zonas de Bogotá">'+
+    '<path d="'+CITY+'" fill="var(--map-land)" stroke="var(--map-stroke)" stroke-width="2"/>'+
+    '<path d="M206 118 C232 140 236 200 214 240 C244 210 246 150 230 118 Z" fill="var(--map-hill)" opacity=".85"/>'+
+    '<path d="M90 120 H210 M80 205 H214 M96 270 H206" stroke="var(--map-stroke)" stroke-width="2" opacity=".5"/>'+
+    '<g font-family="Helvetica,Arial,sans-serif" font-size="11" fill="var(--muted)" font-weight="600"><text x="70" y="48">Norte</text><text x="206" y="96">Chapinero</text><text x="118" y="150">Centro</text><text x="44" y="232">Occidente</text><text x="150" y="312">Sur</text></g>'+pins+'</svg>';
+}
+function placeCard(p,near){return '<div class="line place"><div class="hd"><span class="dot" style="background:'+p.c+'"></span><b>'+p.n+'</b>'+(near?'<span class="nearby">En tu localidad</span>':'')+'</div>'+
+  '<p class="for" style="margin-bottom:4px"><span style="color:'+p.c+';font-weight:600">'+p.cat+'</span></p><p class="for">'+p.d+'</p>'+
+  '<p class="meta">📍 '+p.addr+'  ·  🕐 '+p.hours+'</p>'+
+  '<a class="gmaps" href="'+gmapsURL(p.q)+'" target="_blank" rel="noopener">Cómo llegar · Google Maps '+icon('ext')+'</a></div>'}
+function renderMap(){
+  const options='<option value="">Elige tu localidad…</option>'+LOCS.map(l=>'<option'+(curLoc===l?' selected':'')+'>'+l+'</option>').join('');
+  const selector='<div class="field" style="margin-bottom:12px"><label>¿En qué localidad estás?</label><select onchange="selLoc(this.value)">'+options+'</select></div>';
+  const legend='<div class="legend"><span><i style="background:#2E7D5B"></i>Casas LGBTI del Distrito (gratuitas)</span><span><i style="background:#6D4C9F"></i>Zona diversa / ocio y cultura</span></div>';
+  const note='<div class="note">Dentro de esta app no se puede incrustar Google Maps, pero cada lugar abre el <b>mapa real de Google</b> con “Cómo llegar”. Las Casas LGBTI son reales y oficiales de la Secretaría de Integración Social.</div>';
+  const allBtn='<a class="gmaps-all" href="'+gmapsURL('Casas LGBTI Bogotá')+'" target="_blank" rel="noopener">Abrir todas en Google Maps '+icon('ext')+'</a>';
+  let listHTML='';
+  if(curLoc){const inLoc=PLACES.filter(p=>p.loc===curLoc),rest=PLACES.filter(p=>p.loc!==curLoc);
+    if(inLoc.length){listHTML+='<p class="vsub" style="margin:4px 0 8px">En tu localidad ('+curLoc+')</p>'+inLoc.map(p=>placeCard(p,true)).join('');
+      listHTML+='<p class="vsub" style="margin:12px 0 8px">Otras Casas LGBTI</p>'+rest.map(p=>placeCard(p,false)).join('');}
+    else{listHTML+='<div class="note" style="background:var(--blue-soft);border-color:var(--blue-soft);color:var(--ink-soft)">Aún no hay un espacio seguro registrado en <b>'+curLoc+'</b>. Puedes proponer uno más abajo. Mientras tanto, estas Casas LGBTI del Distrito te reciben:</div>'+PLACES.map(p=>placeCard(p,false)).join('');}
+  } else {listHTML=PLACES.map(p=>placeCard(p,false)).join('');}
+  document.getElementById('mapcontent').innerHTML=selector+'<div class="mapbox">'+mapSVG()+legend+'</div>'+note+allBtn+listHTML+
+    '<button class="addbtn" onclick="toggleForm()">＋ Proponer un espacio seguro</button><div id="pform-slot"></div><div id="props"></div>';
+  renderProps();
+}
+function selLoc(l){curLoc=l;renderMap();window.scrollTo(0,0);}
+function toggleForm(){const slot=document.getElementById('pform-slot');if(slot.innerHTML){slot.innerHTML='';return;}
+  slot.innerHTML='<div class="pform"><div class="field"><label>¿Qué lugar quieres proponer?</label><input id="pp-name" placeholder="Nombre del lugar"></div>'+
+    '<div class="field"><label>¿En qué localidad está?</label><select id="pp-loc">'+LOCS.map(l=>'<option'+(curLoc===l?' selected':'')+'>'+l+'</option>').join('')+'</select></div>'+
+    '<div class="field"><label>¿Por qué lo sientes seguro?</label><textarea id="pp-why" rows="2" placeholder="Qué lo hace un espacio respetuoso…"></textarea></div>'+
+    '<button class="btn btn-primary" style="width:100%" onclick="saveProp()">Guardar propuesta</button></div>';}
+function getProps(){return load('as_props')}
+function saveProp(){const name=(document.getElementById('pp-name').value||'').trim();if(!name){document.getElementById('pp-name').focus();return;}
+  const loc=document.getElementById('pp-loc').value,why=(document.getElementById('pp-why').value||'').trim();
+  const l=getProps();l.push({name,loc,why,at:new Date().toISOString()});store('as_props',l);
+  document.getElementById('pform-slot').innerHTML='';renderProps();}
+function delProp(i){const l=getProps();l.splice(i,1);store('as_props',l);renderProps();}
+function renderProps(){const l=getProps(),el=document.getElementById('props');if(!el)return;if(!l.length){el.innerHTML='';return;}
+  el.innerHTML='<p class="vsub" style="margin:4px 0 8px">Tus propuestas (guardadas en este dispositivo)</p>'+
+    l.map((p,i)=>'<div class="line place"><div class="hd"><span class="dot" style="background:#F5CE47"></span><b>'+esc(p.name)+'</b><button class="copy" style="margin-left:auto;color:var(--red)" onclick="delProp('+i+')">Quitar</button></div><p class="meta">📍 '+esc(p.loc)+'</p>'+(p.why?'<p class="for" style="margin-top:6px">“'+esc(p.why)+'”</p>':'')+'</div>').join('');}
+
+/* ---------- ayuda ---------- */
+let helpLoc='',helpRef='',helpWith='';
+function saveHelp(){try{localStorage.setItem('as_help',JSON.stringify({loc:helpLoc,ref:helpRef,with:helpWith,at:new Date().toISOString()}))}catch(e){}}
+function renderHelp(){
+  const c=document.getElementById('helpcontent');if(!c)return;
+  let h='<div class="redbar"><span style="font-size:20px">🚨</span><span><b>¿Hay peligro inmediato?</b><small>Llama a la línea de emergencias</small></span><button class="copy" onclick="copyNum(\'123\',this)">123</button></div>';
+  h+='<div class="card"><h3>1 · ¿Dónde estás?</h3>'+
+    '<div class="field" style="margin:10px 0"><label>Localidad</label><select onchange="helpLoc=this.value;saveHelp()">'+
+    '<option value="">Elige…</option>'+LOCS.map(l=>'<option'+(helpLoc===l?' selected':'')+'>'+l+'</option>').join('')+'</select></div>'+
+    '<div class="field" style="margin-bottom:0"><label>Punto de referencia (opcional)</label><input placeholder="Estación, parque, dirección…" value="'+esc(helpRef)+'" oninput="helpRef=this.value;saveHelp()"></div></div>';
+  h+='<div class="card"><h3>2 · ¿Estás solx o con alguien?</h3><div class="scale" style="margin-top:10px">'+
+    '<button class="'+(helpWith==='solo'?'sel':'')+'" onclick="helpWith=\'solo\';saveHelp();renderHelp()">Estoy solx</button>'+
+    '<button class="'+(helpWith==='acomp'?'sel':'')+'" onclick="helpWith=\'acomp\';saveHelp();renderHelp()">Con alguien</button></div></div>';
+  if(helpWith)h+=planHTML();
+  c.innerHTML=h;
+}
+function planHTML(){
+  const solo=helpWith==='solo';
+  const steps=solo?[
+    ['Ve a un lugar visible','Acércate a una tienda, un local abierto o un grupo de personas. Estar a la vista reduce el riesgo.'],
+    ['Avisa a alguien de confianza','Escribe o llama y di dónde estás'+(helpRef?' ('+esc(helpRef)+')':'')+' y cómo te sientes.'],
+    ['Baja la activación','Haz una respiración de 1 minuto antes de decidir tu próximo paso.'],
+    ['Ve a un espacio seguro','Dirígete a la Casa LGBTI o lugar seguro más cercano.']
+  ]:[
+    ['Dile cómo te sientes','No tienes que fingir con quien te acompaña. Pídele estar pendiente de ti.'],
+    ['Quédense juntxs','Acuerden no separarse y salir del lugar si es necesario.'],
+    ['Respiren un minuto','Hagan juntxs una respiración lenta para calmarse.'],
+    ['Busquen apoyo si hace falta','Entre lxs dos pueden llamar a una línea o, si hay riesgo, al 123.']
+  ];
+  const casa=helpLoc?PLACES.find(p=>p.loc===helpLoc&&p.cat.indexOf('Casa')>=0):null;
+  let h='<div class="card" style="border-color:var(--'+(solo?'blue':'green')+')"><span class="pill" style="background:var(--'+(solo?'blue':'green')+'-soft);color:var(--'+(solo?'blue':'green')+')">'+(solo?'Estás solx':'Estás acompañadx')+'</span><h3>'+(getName()?getName()+', tu plan paso a paso':'Tu plan, paso a paso')+'</h3><div style="margin-top:8px">'+
+    steps.map((s,i)=>'<div class="step"><span class="n">'+(i+1)+'</span><span><b>'+s[0]+'</b><p>'+s[1]+'</p>'+(i===2?'<button class="miniact" onclick="helpTecnica(\'resp\')">Hacer la respiración →</button>':'')+'</span></div>').join('')+'</div>'+
+    '<p class="vsub" style="margin:4px 0 0;color:var(--muted)">Al terminar la respiración vuelves aquí para seguir con tu plan.</p></div>';
+  if(casa)h+='<div class="card"><h3>Espacio seguro en '+esc(helpLoc)+'</h3><p style="margin:6px 0 0">'+casa.n+' · '+casa.addr+'</p><a class="gmaps" href="'+gmapsURL(casa.q)+'" target="_blank" rel="noopener">Cómo llegar · Google Maps '+icon('ext')+'</a></div>';
+  h+='<div class="bctrl" style="margin-bottom:12px"><button class="btn btn-ghost" onclick="helpTecnica(\'resp\')">Respirar 1 min</button><button class="btn btn-primary" onclick="go(\'rutas\')">Ver líneas de apoyo</button></div>';
+  return h;
+}
+
+/* ---------- feedback ---------- */
+let fbScore=0;
+const MEAN={1:'Nada útil',2:'Poco útil',3:'Algo útil',4:'Bastante útil',5:'Muchísimo'};
+function initScale(){document.querySelectorAll('#scale button').forEach(b=>b.onclick=()=>{fbScore=+b.dataset.v;document.querySelectorAll('#scale button').forEach(x=>x.classList.toggle('sel',x===b));
+  const m=document.getElementById('scalemeaning');if(m)m.innerHTML='<b style="color:var(--blue)">'+fbScore+' — '+MEAN[fbScore]+'</b>'})}
+function sendFb(){const f1=document.getElementById('f1').value.trim(),f3=document.getElementById('f3').value.trim();if(!f1&&!fbScore&&!f3){document.getElementById('f1').focus();return}
+  try{const all=JSON.parse(localStorage.getItem('as_fb')||'[]');all.push({q1:f1,score:fbScore,q3:f3,at:new Date().toISOString()});localStorage.setItem('as_fb',JSON.stringify(all))}catch(e){}
+  document.getElementById('fbform').hidden=true;const t=document.getElementById('fbthanks');t.hidden=false;
+  t.innerHTML='<div class="thanks"><b>¡Gracias! 💜</b><p>Tu opinión queda guardada en este teléfono. Muéstrasela a quien facilita la actividad para que la registre.</p></div>'+
+    '<div class="card" style="margin-top:14px"><h3>Tu respuesta</h3><p style="margin-top:6px"><b>Sentiste:</b> '+(esc(f1)||'—')+'</p><p><b>Utilidad:</b> '+(fbScore?fbScore+'/5':'—')+'</p><p><b>Mejorarías:</b> '+(esc(f3)||'—')+'</p></div>';}
+function esc(s){return(s||'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]))}
+
+/* init */
+renderRights();renderLines();renderMap();initScale();initSettings();renderAnimo();applyName();applyForm();
+(function(){const ni=document.getElementById('introname');if(ni)ni.value=getName();})();
+(function(){const a=peopleSVG();const h=document.getElementById('hero-art');if(h)h.innerHTML=a;const i=document.getElementById('intro-art');if(i)i.innerHTML=a;})();
+(function(){const h=location.hash.replace('#','');if(views.includes(h)&&h!=='inicio')go(h)})();
+</script>
+
+</body>
+</html>
